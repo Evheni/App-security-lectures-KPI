@@ -22,3 +22,116 @@
 + Стабільність
 + Захищеність
 + Спрощення розгортання
++ Оптимізація під процесор
++ Взаємодія компонентів
+
+2png.png
+
+Лекц2
+Збірка - одиниця в дотнет. Можем буду в .ехе(містять точку входа), .dll
+3png.png
+4png.png
+5png.png
+а) Найпростіший варіант створення збірок у вигляді одного файлу
+6png.png
+
+ІІІ. Перегляд структури збірок
+ildasm.exe - утиліта для "декомпіляції"
+ilasm.exe - утиліта для компіляції IL-коду
+
+Перегляд збірки:
+1) Ввести в команднії стрічці >ildasm.exe (Файл-Откріть)
+2) Ввести в команднії стрічці >ildasm.exe <path>
+
+для компіляції (створення збірки) в c# можна застосувати csc.exe
+>csc /target:exe Hello.cs /out:hello.exe
+             win.exe
+             library (dll)
+             module
+для перегляду усіх команд можна використати: >csc /?
+Для створення модуля, можна використати таку команду:
+>csc /target:module Module1.cs /out:Module1.netmodule
+Для створення нових збірок, використовуючи готові модулі
+>csc /target:exe /addModule:Module1.netmodule /out:hello.exe
+Розділяють збірки на декілька файлів для створення программ з обмеженим функціоналом
+
+ІV. Використання збірок
+
+Атрибути збірок можуть задаватись в файлі Assemblyinfo.cs, в якому можна задавати
+цілий ряд додаткових параметрів збірок:
+Assembly Company - назва компанії
+Assembly Copyright - інформація про авторів
+Assembly Description - опис збірок
+Assembly Version і т.д.
+
+
+I. Структура програми
+II. Визначення збірки і посилань на збірки, що розділяються
+ІІІ. Визов методів
+ІV. Визначення просторів імен, класів і ...
+V. Визначення полів, конструкторів і властивостей класів
+
+Як пишуться додатки, стуктура найпростішої програми:
+Директиви (пишуться з крапки) - .method
+За директивою можуть слідувати атрибути - .method static void
+Потім ім'я методу - .method static void FirstPogram() {}
+Далі вказуються деякі інструкції (тіло методу), але для компіляції головне
+вказати ім'я збірки (посилання), яке може мати додаткові директиви
+
+.assembly MyAssemble {
+
+}
+.method static void FirstProgram() {
+    ret //вихід з файлу
+}
+
+Для .ехе файлів треба помітити точку входу за допомогою директиви .entrypoint
+
+.assembly MyAssemble {
+
+}
+.method static void FirstProgram() {
+    .entrypoint
+    ret
+}
+
+Вказання посилань на зовнішні збірки, використовуються "дружні" імена
+
+.assembly extern mscorlib{
+    .ver 2:0:1:1
+    .publickeytoken =  (11 B2 D4 F5 7D 99 FF)
+}
+.assembly MyAssemble {
+    .ver 1:0:0:0
+}
+.method static void FirstProgram() {
+    call [mscorlib]System.Console::Bepp()
+    call [mscorlib]System.Console::ReadLine()
+    .entrypoint
+    ret
+}
+
+Визначення простору імен класів та функцій
+
+Для створення простору імен використовується директива .namespace
+
+a) .net 2.0 <
+.namespace FirstSpace {
+    .namespace  SecondSpace {
+        .class BaseClass {
+
+        }
+    }
+}
+
+b) .net 2.0 >=
+.class FirstSpace.SecondSpace.BaseClass {
+
+}
+
+.namespace FirstSpace {
+    .namespace SecondSpace {
+        .class BaseClass {}
+        .class DerivedClass extends FirstSpace.SecondSpace.BaseClass {}
+    }
+}
