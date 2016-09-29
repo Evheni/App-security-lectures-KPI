@@ -135,3 +135,206 @@ b) .net 2.0 >=
         .class DerivedClass extends FirstSpace.SecondSpace.BaseClass {}
     }
 }
+
+ЛЕКЦИЯ 3
+
+Для створення інтерфейсу директиви не існує. Треба створювати класс з атрибутом інтерфейсу:
+
+.class interface IMyInterface {}
+//--//extends//--//implements
+.namespace FirstSpace {
+    .class interface IMyInterface {/*impl*/}
+    .class MyClass implements FirstSpace.IMyInterface {}
+}
+
+Переконались, що namespace "НЕ ІСНУЄ", але існують класи
+
+.assembly MyAssembly {}
+.namespace MyNamespace{
+    .class Program {
+        .method public static void main() {
+            .entrypoint
+            call string  [mscorlib]System.Console::ReadLine()
+            pop
+            call void  MyNamespace.Program::Voice()
+            ret
+        }
+        .method static void Voice() {
+            call void [mscorlib]System.Console::Beep()
+            ret
+        }
+    }
+}
+
+.assembly MyAssembly {}
+.method public static void main() {
+    .entrypoint
+    call string  [mscorlib]System.Console::ReadLine()
+    pop
+    call void  Voice()
+    ret
+}
+.method static void Voice() {
+    call void [mscorlib]System.Console::Beep()
+    ret
+}
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+.assembly MyAssembly {}
+.class BaseClass {
+    .method void Voice {
+        call void [mscorlib]System.Console::Beep()
+        ret
+    }
+}
+.class interface IPause() {
+    .method void Pause() {}
+}
+.class DerivedClass extends BaseClass implements IPause {
+    .method static void Pause {
+        call string [mscorlib] System.Console::ReadLine()
+        pop
+        ret
+    }
+}
+.method static void Main() {
+    call void DerivedClass::Pause()
+    call void DerivedClass::Voice()
+}
+
+7png.png
+
+Статичний конструктор
+
+.assembly MyAssembly {}
+.class Program {
+    .method static void .cctor() {
+        call void [mscorlib]System.Console::Clear()
+        ret
+    }
+    .method static void Main() {
+        call string [mscorlib]System.Console::ReadLine()
+        pop
+        ret
+        .entrypoint
+    }
+}
+
+Конструктор екземпляру
+
+class Instance {
+    .method instance void .ctor() {
+        .maxstack 1
+        ldarg.0
+        call instance void [mscorlib]System.Object::ctro()
+        ldstr "Constructor was run!"
+        call void [mscorlib]System.Console::WriteLine(string)
+        ret
+    }
+    .field public string name
+}
+
+.method static void Main(){
+    .entrypoint
+    .locals init (class Instance obj)
+    newobj instance void Instance::.ctor()
+    ldstr "pupkin"
+    stfld string Instance::name
+    ldfld string Instance::name
+    call void [mscrorlib]System.Console::WriteLine(string)
+    ret
+}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+class Instance {
+    .method instance void .ctor() {
+        .maxstack 1
+        ldarg.0
+        call instance void [mscorlib]System.Object::ctro()
+        ldstr "Constructor was run!"
+        call void [mscorlib]System.Console::WriteLine(string)
+        ret
+    }
+    .field public string name
+}
+
+.method static void Print(){
+    ldarg.0
+    ldfld string Instance::name
+    ldstr "name="
+    call void [mscrorlib]System.Console::WriteLine(string)
+    call void [mscrorlib]System.Console::WriteLine(string)
+    ret
+}
+
+Лекц 4
+
+Пр 9
+.method static void Main() {
+    .locals (class Instance obj)
+    newobj instance void Instance::ctor()
+    stloc obj
+    ldloc obj
+    ldstr "pmpkin"
+    stfld string Instance::name
+    ldloc obj
+    ldfld string Instance::name
+    call instance void Instance::Print()
+    ret
+    .entrypoint
+}
+
+для доступу до полів можна використовувати властивості
+
+Оголошення властивостей
+
+.field private <type> <field.name>
+.property instance public <Field_name> {
+    .get instance <type> <ClassName>::get_<Field_name>
+    .set instance void <ClassName>::set_<Field_name>
+}
+
+.method instance <type> <ClassName>::get_<Field_name>() {
+
+}
+
+.method instance void <ClassName>::set_<Field_name>(<type>) {
+/*impl*/
+}
+
+call <type> <ClassName>::get_<Field_name>()
+call void <ClassName>::set_<Field_name>(<type>)
+
+
+┌────────────────────┬────────────┬──────────────┬──────────────────────────────┐
+│  .Net              │    C#      │   IL         │         Конс нотація IL      │
+├────────────────────┼────────────┼──────────────┼──────────────────────────────┤
+│  System.Single     │    float   │   float32    │          r4                  │
+│  System.Double     │    double  │   float64    │          r8                  │
+│  System.Char       │    char    │   char       │          char                │
+│  System.Boolean    │    bool    │   bool       │          boolean             │
+│  System.String     │    string  │   string     │           ─                  │
+│  System.Void       │    void    │   void       │          void                │
+└────────────────────│────────────│──────────────│──────────────────────────────┘
+
+.assembly MyAssembly() {
+    .method static void Main() {
+        .locals init(int8 a,
+                     int16 b,
+                     int32 c,
+                     int64 d,
+                     float32 -1.2,
+                     float64 3.14,
+                     char chr,
+                     string str)
+        ldc.i4.s 16
+        stloc a
+        ldloc a
+        call void [mscorlib]System.Console::WriteLine(int32)
+    }
+}
+
+Лекц 5
+8png.png
