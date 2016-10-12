@@ -139,7 +139,6 @@ b) .net 2.0 >=
 .class FirstSpace.SecondSpace.BaseClass {
 
 }
-```
 .namespace FirstSpace {
     .namespace SecondSpace {
         .class BaseClass {}
