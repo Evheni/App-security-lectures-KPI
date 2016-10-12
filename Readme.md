@@ -319,7 +319,7 @@ class Instance {
 call <type> <ClassName>::get_<Field_name>()
 call void <ClassName>::set_<Field_name>(<type>)
 ```
-
+```
 ┌────────────────────┬────────────┬──────────────┬──────────────────────────────┐
 │  .Net              │    C#      │   IL         │         Конс нотація IL      │
 ├────────────────────┼────────────┼──────────────┼──────────────────────────────┤
@@ -330,6 +330,7 @@ call void <ClassName>::set_<Field_name>(<type>)
 │  System.String     │    string  │   string     │           ─                  │
 │  System.Void       │    void    │   void       │          void                │
 └────────────────────┼────────────┼──────────────┼──────────────────────────────┘
+```
 ```
 .assembly MyAssembly() {
     .method static void Main() {
