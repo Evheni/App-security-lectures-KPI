@@ -317,7 +317,7 @@ call void <ClassName>::set_<Field_name>(<type>)
 │  System.Boolean    │    bool    │   bool       │          boolean             │
 │  System.String     │    string  │   string     │           ─                  │
 │  System.Void       │    void    │   void       │          void                │
-└────────────────────│────────────│──────────────│──────────────────────────────┘
+└────────────────────┼────────────┼──────────────┼──────────────────────────────┘
 
 .assembly MyAssembly() {
     .method static void Main() {
@@ -338,3 +338,255 @@ call void <ClassName>::set_<Field_name>(<type>)
 
 Лекц 5
 8png.png
+
+ldc - завантаж. конст
+ldc.i4 10
+
+ldstr 0 - занесення текстового рядка
+ldstr "Hello"
+
+ldloc - завантаження локальних аргументів
+ldarg - завантаження локальних аргументів методів
+ldfld - завантаження локальних полів
+
+ldc.i4.0 ... ldc.i4.8
+ldloc.0 ... ldloc.8
+
+stloc - зберегти локальні змінні
+starg - зберегти локальні аргументи методів
+stfld - зберегти локальні поля
+
+pop - очищення вершини стеку
+
+Приклад 1
+
+.assembly MyAssembly {}
+.method static void Main() {
+    ldstr "One"
+    ldstr "Two"
+    ldstr "Three"
+    call void [mscorlib]System.Console::WriteLine(string)
+    call void [mscorlib]System.Console::WriteLine(string)
+    call void [mscorlib]System.Console::WriteLine(string)
+    ret
+    .entrypoint
+}
+
+Приклад 2
+
+.assembly MyAssembly {}
+.method static void Main() {
+    .entrypoint
+    .maxstack 2
+    ldstr "Enter number:"
+    call void [mscorlib]System.Console::WriteLine(string)
+    call string [mscorlib]System.Console::ReadLine()
+    call int32 [mscorlib]System.Int32::Parse(string)
+    ldstr "You enter:"
+    call void [mscorlib]System.Console::WriteLine(string)
+    call void [mscorlib]System.Console::WriteLine(string)
+    ret
+}
+
+Способи задання локальних змінних
+
+1) .locals init(type <name>, ...)
+    ldloc <name?
+2) .localc init([0]type<name1>,
+                [1]type<name2>, ...)
+    ldloc.0 ... ldloc.3 ... ldloc.9
+
+Операції:
+1) Арифметичні: add(+), sub(-), mul(*), div(/), rem(%)
+2) Порівняння: ceq(=), clt(<), cgt(>)
+3) Переходу на мітку: btrue <label>, bfalse <label>, br<label
+    beq(=), blt(<), ble(<=), bge(>)
+4) Упаковка даних:
+    box type
+    unbox type
+
+WriteLine(string, object, object, ...)
+WriteLine("x={0}", )
+
+.locals init (int32, int32)
+ldc.i4.1
+stloc.0
+ldc.i4.2
+stloc.1
+ldloc.0
+ldloc.1
+ceq
+btrue _label
+_label:
+
+Лекция 6
+...
+Пропущено пол часа пары
+...
+if, switch
+for, while, foreach - в CIL не существуют!
+"Они придуманы массонами!" - заявил Юрий Адамович
+
+Реалізація умовного оператора if
+
+Пр.2
+.assembly MyAssembly {}
+.method static void Main() {
+    .maxstack 2
+    .entrypoint
+    .locals init(int32 x)
+    ldc.i4 15 //x
+    stloc x
+    ldloc x
+    ldc.i4 2
+    rem
+    ldc.i4 0
+    ceq
+    bfalse _odd //или 0dd
+    ldstr "{0} - Even"
+    ldloc x
+    box int32
+    call void [mscorlib]System.Console::WriteLine(string, object)
+    ret
+
+    _odd:
+    ldstr "{0} - Odd"
+    ldloc x
+    box int32
+    call void [mscorlib]System.Console::WriteLine(string, object)
+    ret
+}
+
+Реалізація умовного оператора switch
+
+Пр.3
+.assembly MyAssembly {}
+.method static void Main() {
+    .maxstack 1
+    .entrypoint
+    .locals init(int32 x)
+    ldc.i4 1 //x
+    switch(_0, _1, _2)
+    _0:
+        ldstr "Case 0"
+        call void [mscorlib]System.Console::WriteLine(string, object)
+        ret
+    _1:
+        ldstr "Case 1"
+        call void [mscorlib]System.Console::WriteLine(string, object)
+        ret
+    _2:
+        ldstr "Case 2"
+        call void [mscorlib]System.Console::WriteLine(string, object)
+        ret
+    ret
+}
+
+Реалізація оператора циклу for
+int sum = 0;
+for(int i = 1; i <= 5; i++)
+    sum += i;
+
+Пр.4
+.assembly MyAssembly {}
+.method static void Main() {
+    .maxstack 1
+    .entrypoint
+    .locals init(int32 i, int32 sum)
+    _Inicializaton:
+        ldc.i4 1
+        stloc i
+    _Condition:
+        ldloc i
+        ldc.i4 5
+        blt _Loop
+        br _Exit
+    _Loop:
+        ldloc sum
+        ldloc i
+        add
+        stloc summ
+    _Incrementation:
+        ldloc i
+        ldloc.i4 1
+        add
+        stloc i
+        br _Condition
+    _Exit:
+        ret
+}
+
+Реалізація оператору циклу while
+int sum = 0;
+int i = 1;
+while(i <= 5) {
+    sum += i;
+    i++;
+}
+
+Пр.5
+.assembly MyAssembly {}
+.method static void Main() {
+    .maxstack 1
+    .entrypoint
+    .locals init(int32 i, int32 sum)
+    _Inicializaton:
+        ldc.i4 1
+        stloc i
+    _Condition:
+        ldloc i
+        ldc.i4 5
+        ble _Loop
+        br _Exit
+    _Loop:
+        ldloc sum
+        ldloc i
+        add
+        stloc summ
+        ldloc i
+        ldloc.i4 1
+        add
+        stloc i
+        br _Condition
+    _Exit:
+        ret
+}
+
+Массиви створюються за допомогою команди new arr[], назви змінної та ініціалізації
+
+Реалізація оператору циклу foreach
+
+int[] numbers = {5,10,15}
+foreach(int i in numbers)
+    Console.WriteLine(i);
+
+Пр.6
+.assembly MyAssembly {}
+.method static void Main() {
+    .maxstack 1
+    .entrypoint
+    .locals init(int32[] numbers, int32 i)
+    ldc.i4 3
+    newarr int32
+    stloc numbers
+    // _Inicializaton:
+    //     ldc.i4 1
+    //     stloc i
+    // _Condition:
+    //     ldloc i
+    //     ldc.i4 5
+    //     ble _Loop
+    //     br _Exit
+    // _Loop:
+    //     ldloc sum
+    //     ldloc i
+    //     add
+    //     stloc summ
+    //     ldloc i
+    //     ldloc.i4 1
+    //     add
+    //     stloc i
+    //     br _Condition
+    // _Exit:
+    //     ret
+}
