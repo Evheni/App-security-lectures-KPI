@@ -44,15 +44,24 @@ ilasm.exe - утиліта для компіляції IL-коду
 2) Ввести в команднії стрічці >ildasm.exe <path>
 
 для компіляції (створення збірки) в c# можна застосувати csc.exe
+```
 >csc /target:exe Hello.cs /out:hello.exe
              win.exe
              library (dll)
              module
-для перегляду усіх команд можна використати: >csc /?
+```
+для перегляду усіх команд можна використати:
+```
+>csc /?
+```
 Для створення модуля, можна використати таку команду:
+```
 >csc /target:module Module1.cs /out:Module1.netmodule
+```
 Для створення нових збірок, використовуючи готові модулі
+```
 >csc /target:exe /addModule:Module1.netmodule /out:hello.exe
+```
 Розділяють збірки на декілька файлів для створення программ з обмеженим функціоналом
 
 ІV. Використання збірок
@@ -77,16 +86,16 @@ V. Визначення полів, конструкторів і властив
 Потім ім'я методу - .method static void FirstPogram() {}
 Далі вказуються деякі інструкції (тіло методу), але для компіляції головне
 вказати ім'я збірки (посилання), яке може мати додаткові директиви
-
+```
 .assembly MyAssemble {
 
 }
 .method static void FirstProgram() {
     ret //вихід з файлу
 }
-
+```
 Для .ехе файлів треба помітити точку входу за допомогою директиви .entrypoint
-
+```
 .assembly MyAssemble {
 
 }
@@ -94,9 +103,9 @@ V. Визначення полів, конструкторів і властив
     .entrypoint
     ret
 }
-
+```
 Вказання посилань на зовнішні збірки, використовуються "дружні" імена
-
+```
 .assembly extern mscorlib{
     .ver 2:0:1:1
     .publickeytoken =  (11 B2 D4 F5 7D 99 FF)
@@ -110,12 +119,13 @@ V. Визначення полів, конструкторів і властив
     .entrypoint
     ret
 }
-
+```
 Визначення простору імен класів та функцій
 
 Для створення простору імен використовується директива .namespace
 
 a) .net 2.0 <
+```
 .namespace FirstSpace {
     .namespace  SecondSpace {
         .class BaseClass {
@@ -123,32 +133,33 @@ a) .net 2.0 <
         }
     }
 }
-
+```
 b) .net 2.0 >=
+```
 .class FirstSpace.SecondSpace.BaseClass {
 
 }
-
+```
 .namespace FirstSpace {
     .namespace SecondSpace {
         .class BaseClass {}
         .class DerivedClass extends FirstSpace.SecondSpace.BaseClass {}
     }
 }
-
+```
 ЛЕКЦИЯ 3
 
 Для створення інтерфейсу директиви не існує. Треба створювати класс з атрибутом інтерфейсу:
-
+```
 .class interface IMyInterface {}
 //--//extends//--//implements
 .namespace FirstSpace {
     .class interface IMyInterface {/*impl*/}
     .class MyClass implements FirstSpace.IMyInterface {}
 }
-
+```
 Переконались, що namespace "НЕ ІСНУЄ", але існують класи
-
+```
 .assembly MyAssembly {}
 .namespace MyNamespace{
     .class Program {
@@ -165,7 +176,8 @@ b) .net 2.0 >=
         }
     }
 }
-
+```
+```
 .assembly MyAssembly {}
 .method public static void main() {
     .entrypoint
@@ -178,9 +190,9 @@ b) .net 2.0 >=
     call void [mscorlib]System.Console::Beep()
     ret
 }
-
+```
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
+```
 .assembly MyAssembly {}
 .class BaseClass {
     .method void Voice {
@@ -202,11 +214,11 @@ b) .net 2.0 >=
     call void DerivedClass::Pause()
     call void DerivedClass::Voice()
 }
-
+```
 ![Alt Text](7png.png "7 png")
 
 Статичний конструктор
-
+```
 .assembly MyAssembly {}
 .class Program {
     .method static void .cctor() {
@@ -220,9 +232,9 @@ b) .net 2.0 >=
         .entrypoint
     }
 }
-
+```
 Конструктор екземпляру
-
+```
 class Instance {
     .method instance void .ctor() {
         .maxstack 1
@@ -245,9 +257,9 @@ class Instance {
     call void [mscrorlib]System.Console::WriteLine(string)
     ret
 }
-
+```
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
+```
 class Instance {
     .method instance void .ctor() {
         .maxstack 1
@@ -268,10 +280,11 @@ class Instance {
     call void [mscrorlib]System.Console::WriteLine(string)
     ret
 }
-
+```
 Лекц 4
 
 Пр 9
+```
 .method static void Main() {
     .locals (class Instance obj)
     newobj instance void Instance::ctor()
@@ -285,11 +298,11 @@ class Instance {
     ret
     .entrypoint
 }
-
+```
 для доступу до полів можна використовувати властивості
 
 Оголошення властивостей
-
+```
 .field private <type> <field.name>
 .property instance public <Field_name> {
     .get instance <type> <ClassName>::get_<Field_name>
@@ -306,7 +319,7 @@ class Instance {
 
 call <type> <ClassName>::get_<Field_name>()
 call void <ClassName>::set_<Field_name>(<type>)
-
+```
 
 ┌────────────────────┬────────────┬──────────────┬──────────────────────────────┐
 │  .Net              │    C#      │   IL         │         Конс нотація IL      │
@@ -318,7 +331,7 @@ call void <ClassName>::set_<Field_name>(<type>)
 │  System.String     │    string  │   string     │           ─                  │
 │  System.Void       │    void    │   void       │          void                │
 └────────────────────┼────────────┼──────────────┼──────────────────────────────┘
-
+```
 .assembly MyAssembly() {
     .method static void Main() {
         .locals init(int8 a,
@@ -335,7 +348,7 @@ call void <ClassName>::set_<Field_name>(<type>)
         call void [mscorlib]System.Console::WriteLine(int32)
     }
 }
-
+```
 Лекц 5
 ![Alt Text](8png.png "8 png")
 
@@ -359,7 +372,7 @@ stfld - зберегти локальні поля
 pop - очищення вершини стеку
 
 Приклад 1
-
+```
 .assembly MyAssembly {}
 .method static void Main() {
     ldstr "One"
@@ -371,9 +384,9 @@ pop - очищення вершини стеку
     ret
     .entrypoint
 }
-
+```
 Приклад 2
-
+```
 .assembly MyAssembly {}
 .method static void Main() {
     .entrypoint
@@ -387,7 +400,7 @@ pop - очищення вершини стеку
     call void [mscorlib]System.Console::WriteLine(string)
     ret
 }
-
+```
 Способи задання локальних змінних
 
 1) .locals init(type <name>, ...)
@@ -404,7 +417,7 @@ pop - очищення вершини стеку
 4) Упаковка даних:
     box type
     unbox type
-
+```
 WriteLine(string, object, object, ...)
 WriteLine("x={0}", )
 
@@ -418,18 +431,19 @@ ldloc.1
 ceq
 btrue _label
 _label:
-
+```
 Лекция 6
 ...
 Пропущено пол часа пары
 ...
 if, switch
 for, while, foreach - в CIL не существуют!
-"Они придуманы массонами!" - заявил Юрий Адамович
+>"Они придуманы массонами!" - заявил Юрий Адамович
 
 Реалізація умовного оператора if
 
 Пр.2
+```
 .assembly MyAssembly {}
 .method static void Main() {
     .maxstack 2
@@ -456,10 +470,11 @@ for, while, foreach - в CIL не существуют!
     call void [mscorlib]System.Console::WriteLine(string, object)
     ret
 }
-
+```
 Реалізація умовного оператора switch
 
 Пр.3
+```
 .assembly MyAssembly {}
 .method static void Main() {
     .maxstack 1
@@ -481,13 +496,15 @@ for, while, foreach - в CIL не существуют!
         ret
     ret
 }
-
+```
 Реалізація оператора циклу for
+```
 int sum = 0;
 for(int i = 1; i <= 5; i++)
     sum += i;
-
+```
 Пр.4
+```
 .assembly MyAssembly {}
 .method static void Main() {
     .maxstack 1
@@ -515,16 +532,18 @@ for(int i = 1; i <= 5; i++)
     _Exit:
         ret
 }
-
+```
 Реалізація оператору циклу while
+```
 int sum = 0;
 int i = 1;
 while(i <= 5) {
     sum += i;
     i++;
 }
-
+```
 Пр.5
+```
 .assembly MyAssembly {}
 .method static void Main() {
     .maxstack 1
@@ -551,16 +570,17 @@ while(i <= 5) {
     _Exit:
         ret
 }
-
+```
 Массиви створюються за допомогою команди new arr[], назви змінної та ініціалізації
 
 Реалізація оператору циклу foreach
-
+```
 int[] numbers = {5,10,15}
 foreach(int i in numbers)
     Console.WriteLine(i);
-
+```
 Пр.6
+```
 .assembly MyAssembly {}
 .method static void Main() {
     .maxstack 1
@@ -590,3 +610,4 @@ foreach(int i in numbers)
     // _Exit:
     //     ret
 }
+```
