@@ -25,15 +25,15 @@
 + Оптимізація під процесор
 + Взаємодія компонентів
 
-2png.png
+![Alt Text](2png.png "Two png")
 
 Лекц2
 Збірка - одиниця в дотнет. Можем буду в .ехе(містять точку входа), .dll
-3png.png
-4png.png
-5png.png
+![Alt Text](3png.png "3 png")
+![Alt Text](4png.png "4 png")
+![Alt Text](5png.png "5 png")
 а) Найпростіший варіант створення збірок у вигляді одного файлу
-6png.png
+![Alt Text](6png.png "6 png")
 
 ІІІ. Перегляд структури збірок
 ildasm.exe - утиліта для "декомпіляції"
@@ -203,7 +203,7 @@ b) .net 2.0 >=
     call void DerivedClass::Voice()
 }
 
-7png.png
+![Alt Text](7png.png "7 png")
 
 Статичний конструктор
 
@@ -337,7 +337,7 @@ call void <ClassName>::set_<Field_name>(<type>)
 }
 
 Лекц 5
-8png.png
+![Alt Text](8png.png "8 png")
 
 ldc - завантаж. конст
 ldc.i4 10
