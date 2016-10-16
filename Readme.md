@@ -6,6 +6,7 @@
 <li><a href="#Лекц4">Лекция 4</a></li>
 <li><a href="#Лекц5">Лекция 5</a></li>
 <li><a href="#Лекц6">Лекция 6</a></li>
+<li><a href="#Лекц7">Лекция 7</a></li>
 </ul>
 #Лекц1
 ##Короткі відомості
@@ -598,25 +599,68 @@ foreach(int i in numbers)
     ldc.i4 3
     newarr int32
     stloc numbers
-    // _Inicializaton:
-    //     ldc.i4 1
-    //     stloc i
-    // _Condition:
-    //     ldloc i
-    //     ldc.i4 5
-    //     ble _Loop
-    //     br _Exit
-    // _Loop:
-    //     ldloc sum
-    //     ldloc i
-    //     add
-    //     stloc summ
-    //     ldloc i
-    //     ldloc.i4 1
-    //     add
-    //     stloc i
-    //     br _Condition
-    // _Exit:
-    //     ret
+
+    //Присв значень
+    ldloc numbers
+    ldc.i4 2
+    ldc.i4 15
+    stelem.i4
+
+    ldloc numbers
+    ldc.i4 1
+    ldc.i4 10
+    stelem.i4
+
+    ldloc numbers
+    ldc.i4 0
+    ldc.i4 5
+    stelem.i4
+
+    _Condition:
+    ldloc numbers
+    ldloc i
+    ldlen
+    bel _Loop
+    br _Exit
+
+    _Loop:
+    ldloc i
+    ldc.i4 1
+    add
+    ldloc numbers
+    ldloc i
+    ldelem.i4
+    call void [mscorlib]System.Console::WriteLine(int32)
+    br _Condition
+
+    _Exit:
+    ret
 }
+```
+#Лекц7
+![Alt Text](9png.png "9 png")
+
+Технології ЗПП:
+```
+- "Водяні знаки"
+- Відбиток пальців
+- Перевірка цілістності
+- "Клієнт-сервер"
+- DRM
+```
+
+Унеможливлення декомпіляції
+
+1.
+```
+using System;
+using System.Runtaime.CompilerServices;
+[assembly: SuppressILdasmAttribute()]
+class Program() {
+    ...
+}
+```
+2. Assemblyinfo.cs
+```
+[assembly: SupressILdasm]
 ```
