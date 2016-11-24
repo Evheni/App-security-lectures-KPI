@@ -991,3 +991,23 @@ CMD:
 C:\>cipher /E <path>
 C:\>cipher /D <path>
 ```
+
+AES <- enKey
+
+RSA <- pubkey
+RSA <- privateKey
+
+Шифрування в EFS
+![Alt Text](45png.png "45 png")
+Розшифрування в EFS
+![Alt Text](46png.png "46 png")
+
+Національний гост шифрування
+ДСТУ ГОСТ 28147:2009
+AES (Advanced Encryption Standart)
+
+Параметри:
+Блок - 64 біти
+Ключ - 256 біт
+Підключ - 32 біти
+Рсупуц - 32
