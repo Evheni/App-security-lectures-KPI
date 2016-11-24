@@ -1011,3 +1011,11 @@ AES (Advanced Encryption Standart)
 Ключ - 256 біт
 Підключ - 32 біти
 Рсупуц - 32
+![Alt Text](47png.png "47 png")
+![Alt Text](48png.png "48 png")
+![Alt Text](49png.png "49 png")
+![Alt Text](50png.png "50 png")
+![Alt Text](51png.png "51 png")
+![Alt Text](52png.png "52 png")
+![Alt Text](53png.png "53 png")
+![Alt Text](54png.png "54 png")
