@@ -1019,3 +1019,41 @@ AES (Advanced Encryption Standart)
 ![Alt Text](52png.png "52 png")
 ![Alt Text](53png.png "53 png")
 ![Alt Text](54png.png "54 png")
+
+###Лекц13
+Для шифрування використовуються крипто-потоки байтового повідомлення (який надаж крипто-провайдер)
+![Alt Text](55png.png "55 png")
+![Alt Text](56png.png "56 png")
+![Alt Text](57png.png "57 png")
+
+Програмна реалізація шифрування
+```
+1   DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+2   des.Key = UnicodeEncoding.UTF8.GetBytes("ABCDEFGH"); //ключ довжиною 64-біти, кожен символ=16 біт
+3   des.IV = UnicodeEncoding.UTF8.GetBytes("HGFEDCBA"); // IV - Initialize Vector, вектор ініціалізації
+4   CryptoMode cm = CryptoMode.CBC; //Обрали режим CBC
+5   FileStream fs = File.openWrite(@"C:\test.txt"); // пишемо у файл test.txt
+6   CryptoStream cs = new CryptoStream(fs, des.CreateEncryptor, cm.Write());//Створюємо криптопотік
+7   byte[] data = UnicodeEncoding.UTF8.GetBytes("HelloWorld");//вхідний текст "ХеллоВорлд"
+8   cs.Write(data, 0, data.Length);
+9   cs.close();
+10  fs.close();
+```
+
+Програмна реалізація дешифрування
+```
+1   DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+2   des.Key = UnicodeEncoding.UTF8.GetBytes("ABCDEFGH"); //ключ довжиною 64-біти, кожен символ=16 біт
+3   des.IV = UnicodeEncoding.UTF8.GetBytes("HGFEDCBA"); // IV - Initialize Vector, вектор ініціалізації
+4   CryptoMode cm = CryptoMode.CBC; //Обрали режим CBC
+5   FileStream fs = File.openWrite(@"C:\test.txt"); // пишемо у файл test.txt
+6   CryptoStream cs = new CryptoStream(fs, des.CreateDecryptor, cm.Read());//Створюємо криптопотік
+7   StreamReader reader = new StreamReader(cs);
+8   string data = reader.ReadToEnd();
+9   cs.close();
+10  fs.close();
+```
+
+DESCryptoServiceProvider
+TripleDesCryptoServiceProvider
+AESCryptoServiceProvider
